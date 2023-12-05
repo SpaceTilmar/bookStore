@@ -25,10 +25,13 @@ public class CategoryService {
         if(findCategoryById.isPresent()){
             Category updatedCategory = findCategoryById.get();
             updatedCategory.setCategoryName(category.getCategoryName());
-            return updatedCategory;
+            return categoryRepository.save(updatedCategory);
         }
 
         return category;
+    }
+    public Category getCategoryById(Long categoryId) {
+        return categoryRepository.findById(categoryId).orElse(null);
     }
 
     public void deleteCategory(Long categoryId){

@@ -2,56 +2,80 @@ package com.finalexam.bookstorefixed.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.finalexam.bookstorefixed.model.Book;
+import com.finalexam.bookstorefixed.service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 public class BookController {
 
-    /**
-     * create a book
-     * @param categoryId
-     * @param book
-     * @return
-     */
+    private final BookService bookService;
 
-    /**
-     * update a book
-     * @param bookId
-     * @param updatedBook
-     * @return
-     */
+    @Autowired
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
-    /**
-     * delete a book
-     * @param bookId
-     * @return
-     */
+    @PostMapping("/categories/")
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+        Book createdBook = bookService.createBook(book);
+        if (createdBook != null) {
+            return new ResponseEntity<>(createdBook, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
-    /**
-     * get a single book
-     * @param bookId
-     * @return
-     */
+    @GetMapping("/{bookId}")
+    public ResponseEntity<Book> getBookById(@PathVariable Long bookId) {
+        Book book = bookService.getBookById(bookId);
+        if (book != null) {
+            return new ResponseEntity<>(book, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
-    /**
-     * get all books
-     * @return
-     */
+    @GetMapping
+    public ResponseEntity<List<Book>> getAllBooks() {
+        List<Book> books = bookService.getAllBooks();
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
 
-    /**
-     * get books by name
-     * @param bookName
-     * @return
-     */
+    @GetMapping("/search")
+    public ResponseEntity<List<Book>> searchBooks(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String sku
+    ) {
+        List<Book> books = bookService.searchBooks(name, sku);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
 
-    /**
-     * get books by sku
-     * @param bookSku
-     * @return
-     */
+    @PutMapping("/{bookId}")
+    public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @RequestBody Book updatedBook) {
+        Book updated = bookService.updateBook(bookId, updatedBook);
+        if (updated != null) {
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
-    /**
-     * get all book belonging to a category
-     * @param categoryId
-     * @param book
-     * @return
-     */
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<Void> deleteBook(@PathVariable Long bookId) {
+        bookService.deleteBook(bookId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<Book>> getBooksByCategory(@PathVariable String categoryName) {
+        List<Book> books = bookService.getBooksByCategory(categoryName);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
 }
+

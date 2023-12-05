@@ -6,19 +6,14 @@ import com.finalexam.bookstorefixed.service.CategoryService;
 import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class CategoryController {
-
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @Autowired
     private CategoryService categoryService;
@@ -29,32 +24,38 @@ public class CategoryController {
      * @return
      */
     @PostMapping(value = "/categories")
-    public ResponseEntity<?> createCategory(@Validated Category category){
-        return new ResponseEntity<>(categoryService.createCategory(category), HttpStatus.OK);
+    public ResponseEntity<Category> createCategory(@Validated Category category) {
+        Category createdCategory = categoryService.createCategory(category);
+        return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
     }
-
 
     /**
      * updates a category
+     *
      * @param categoryId
      * @param category
      * @return
      */
-    public ResponseEntity<?> updateCategoryById(Category category, Long categoryId){
-        return new ResponseEntity<>(categoryService.updateCategory(category,categoryId), HttpStatus.OK);
+    @PutMapping(value = "/categories/{categoryId}")
+    public ResponseEntity<Category> updateCategoryById(@PathVariable Long categoryId, @Validated @RequestBody Category category) {
+        Category updatedCategory = categoryService.updateCategory(category, categoryId);
+        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
     }
+
     /**
      * deletes a category
+     *
      * @param categoryId
      * @return
      */
-    @DeleteMapping(value = "/categories/{categoryId]")
-    public ResponseEntity<?> deleteCategoryById(@PathVariable Long categoryId){
-        return new ResponseEntity<>(categoryService.deleteCategory(categoryId), HttpStatus.NO_CONTENT);
+    @DeleteMapping(value = "/categories/{categoryId}")
+    public ResponseEntity<?> deleteCategoryById(@PathVariable Long categoryId) {
+        categoryService.deleteCategory(categoryId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    /**
-     * gets all categories
-     * @return
-     */
-
+    @GetMapping
+    public ResponseEntity<Iterable<Category>> getAllCategories() {
+        Iterable<Category> categories = categoryService.getAllCategories();
+        return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
 }

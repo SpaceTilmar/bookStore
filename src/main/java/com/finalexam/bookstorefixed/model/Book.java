@@ -33,4 +33,85 @@ public class Book {
     @Column(name = "bookStock")
     private int stock;
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
+        Id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public Book() {
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "category=" + category +
+                ", Id=" + Id +
+                ", name='" + name + '\'' +
+                ", sku='" + sku + '\'' +
+                ", description='" + description + '\'' +
+                ", price='" + price + '\'' +
+                ", image='" + image + '\'' +
+                ", stock=" + stock +
+                ", id=" + getId() +
+                '}';
+    }
 }
