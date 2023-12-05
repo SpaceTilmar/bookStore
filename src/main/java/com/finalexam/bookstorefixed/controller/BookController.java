@@ -21,7 +21,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @PostMapping("/categories/")
+    @PostMapping("/book")
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
         Book createdBook = bookService.createBook(book);
         if (createdBook != null) {
@@ -31,7 +31,7 @@ public class BookController {
         }
     }
 
-    @GetMapping("/{bookId}")
+    @GetMapping("/book/{bookId}")
     public ResponseEntity<Book> getBookById(@PathVariable Long bookId) {
         Book book = bookService.getBookById(bookId);
         if (book != null) {
@@ -41,13 +41,13 @@ public class BookController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/book")
     public ResponseEntity<List<Book>> getAllBooks() {
         List<Book> books = bookService.getAllBooks();
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/book/search")
     public ResponseEntity<List<Book>> searchBooks(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String sku
@@ -56,7 +56,7 @@ public class BookController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-    @PutMapping("/{bookId}")
+    @PutMapping("/book/{bookId}")
     public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @RequestBody Book updatedBook) {
         Book updated = bookService.updateBook(bookId, updatedBook);
         if (updated != null) {
@@ -66,15 +66,15 @@ public class BookController {
         }
     }
 
-    @DeleteMapping("/{bookId}")
+    @DeleteMapping("/book/{bookId}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long bookId) {
         bookService.deleteBook(bookId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<Book>> getBooksByCategory(@PathVariable String categoryName) {
-        List<Book> books = bookService.getBooksByCategory(categoryName);
+    public ResponseEntity<List<Book>> getBooksByCategory(@PathVariable Long categoryId) {
+        List<Book> books = bookService.getBooksByCategory(categoryId);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 }

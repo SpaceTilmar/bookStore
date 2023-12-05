@@ -12,5 +12,5 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
     List<Book> findByNameContainingAndSkuContaining(String name, String sku);
 
-    List<Book> findByCategoryCategoryName(String categoryName);
+    List<Book> findByCategoryId(Long categoryId);
 }
